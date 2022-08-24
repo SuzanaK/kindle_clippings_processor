@@ -25,8 +25,8 @@ import dateparser
 from collections import defaultdict
 from typing import Tuple, List, Dict
 
-#filename = 'My Clippings.txt'
-filename = 'My Clippings-2022-04-03.txt'
+filename = 'My Clippings.txt'
+#filename = 'My Clippings-2022-04-03.txt'
 #filename = 'clippings-utf8.txt'
 
 # date = datetime.datetime.strptime(date, "%d %m %Y - %H:%M:%S")
@@ -37,7 +37,7 @@ regex_title = re.compile(r'(.*)\((.*)\)')
 def split_title_and_author(line: str) -> Tuple[str, str]:
     m = regex_title.match(line)
     if not m:
-        print('kein Match fuer autor und titel split!')
+        print('No Match for author and title split!')
         print(line)
         return (None, None)
 
@@ -67,7 +67,7 @@ def extract_meta_data_from_second_line(line: str) -> Tuple:
             position = None
         timestamp = meta[1]
     else:
-        print('kenn meta nicht')
+        print('cannot parse this meta information')
         print(meta)
         return None
     if position:
@@ -140,7 +140,7 @@ def process_clipping(clipping) -> Dict:
 def process_file():
 
 
-    output_path = Path('clippings_neu')
+    output_path = Path('clippings')
     yearly_directories = [output_path.joinpath(str(year)) for year in range(2012, 2023)]
     for directory in [output_path, output_path.joinpath('unkown_year')] + yearly_directories:
         if not directory.is_dir():
