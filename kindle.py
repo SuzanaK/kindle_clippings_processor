@@ -13,11 +13,11 @@
 # notizen pro autor
 # notizen pro jahr
 # histogramm über ganzen zeitraum
-# hist über jahr, woche, tag 
+# anzahl notizen, anzahl wörter, hist über jahr, monat, woche, tag 
 # kalender histogramm?
 # wörter pro notiz
 # max pro buch, autor, tag,, in notizen u wörtern
-# topics finden
+# topics finden / clustering 
 
 import json, sys, os, codecs, re, time
 from pathlib import Path
@@ -169,8 +169,6 @@ def process_file():
 
     for ebook, clipping_list in ebooks.items():
         clipping_list = sorted(clipping_list, key=lambda d: d['position_start'])             
-        ebook = ebook.replace('/', '')
-        ebook = ebook.replace('\\', '')
         first_clipping = clipping_list[0]
         if not (first_clipping and first_clipping.get('timestamp')):
             print('no timestamp')
@@ -182,9 +180,12 @@ def process_file():
             year = 'unkown_year'
         else:
             year = timestamp.year
-        markdown_file = output_path.joinpath(str(year)).joinpath(ebook + '.md')
-        fh = codecs.open(markdown_file, 'w', 'utf-8')
-        print(str(markdown_file))
+        print(ebook)
+        ebook = re.sub('[^0-9a-zA-ZäöüßÄÖÜ\-()\s]+', '', ebook)
+        print(f'...wurde zu {ebook}\n')
+        markdown_filepath = output_path.joinpath(str(year)).joinpath(ebook + '.md')
+        fh = codecs.open(markdown_filepath, 'w', 'utf-8')
+        print(str(markdown_filepath))
         fh.write('# ' + first_clipping['title'] + '\n\n')
         fh.write('## ' + first_clipping['author'] + '\n\n')
 
